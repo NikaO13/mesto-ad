@@ -52,8 +52,12 @@
                 id="user-name"
                 class="popup__input popup__input_type_name"
                 placeholder="Имя"
+                required
+                data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               />
             </label>
+            <span class="popup__error" id="user-name-error"></span>
+            <span class="popup__error" id="user-description-error"></span>
             <label class="popup__label">
               <input
                 type="text"
@@ -61,11 +65,13 @@
                 id="user-description"
                 class="popup__input popup__input_type_description"
                 placeholder="Занятие"
+                required
               />
             </label>
             <button
               type="submit"
-              class="button popup__button"
+              class="button popup__button popup__button_disabled"
+              disabled
             >
               Сохранить
             </button>
@@ -85,6 +91,8 @@
                 id="place-name"
                 class="popup__input popup__input_type_card-name"
                 placeholder="Название"
+                required
+                data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               />
             </label>
             <label class="popup__label">
@@ -94,11 +102,16 @@
                 id="place-link"
                 class="popup__input popup__input_type_url"
                 placeholder="Ссылка на картинку"
+                required
               />
             </label>
+            <span class="popup__error" id="place-name-error"></span>
+            <span class="popup__error" id="place-link-error"></span>
+
             <button
               type="submit"
-              class="button popup__button"
+              class="button popup__button popup__button_disabled"
+              disabled
             >
               Создать
             </button>
@@ -141,11 +154,15 @@
                 id="user-avatar"
                 class="popup__input popup__input_type_avatar"
                 placeholder="Ссылка на изображение"
+                required
+                data-error-message="Введите корректную ссылку"
               />
             </label>
+            <span class="popup__error" id="user-avatar-error"></span>
             <button
               type="submit"
-              class="button popup__button"
+              class="button popup__button popup__button_disabled"
+              disabled
             >
               Сохранить
             </button>
