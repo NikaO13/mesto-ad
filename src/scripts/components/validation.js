@@ -39,7 +39,17 @@ const isInputValid = (input) => {
             return false;
         }
     }
-  
+
+    const isUrlField = input.type === 'url' || 
+                      input.classList.contains('popup__input_type_url') || 
+                      input.classList.contains('popup__input_type_avatar');
+    
+    if (isUrlField) {
+        const urlRegex = /^https?:\/\//;
+        if (!urlRegex.test(input.value.trim())) {
+            return false;
+        }
+    }
     return true;
 };
 
