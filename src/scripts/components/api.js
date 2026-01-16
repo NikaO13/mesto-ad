@@ -12,13 +12,53 @@ const getResponseData = (res) => {
 };
 
 export const getUserInfo = () => {
-  return fetch('${config.baseUrl}/users/me', { // Запрос к API-серверу
+  return fetch(`${config.baseUrl}/users/me`, { // Запрос к API-серверу
     headers: config.headers, // Подставляем заголовки
   }).then(getResponseData);  // Проверяем успешность выполнения запроса
 };
 
 export const getCardList = () => {
-  return fetch('${config.baseUrl}/cards', { // Запрос к API-серверу
+  return fetch(`${config.baseUrl}/cards`, { // Запрос к API-серверу
     headers: config.headers, // Подставляем заголовки
   }).then(getResponseData);  // Проверяем успешность выполнения запроса
+};
+
+
+export const setUserInfo = ({ name, about }) => {
+  return fetch(`${config.baseUrl}/users/me`, {
+    method: "PATCH",
+    headers: config.headers,
+    body: JSON.stringify({
+      name,
+      about,
+    }),
+  }).then(getResponseData);
+};
+
+export const setAvatarInfo = (avatar) => {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
+    method: "PATCH",
+    headers: config.headers,
+    body: JSON.stringify({
+      avatar,
+    }),
+  }).then(getResponseData);
+};
+
+export const createNewCard = ({ name, link }) => {
+  return fetch(`${config.baseUrl}/cards`, {
+    method: "POST",
+    headers: config.headers,
+    body: JSON.stringify({
+      name,
+      link,
+    }),
+  }).then(getResponseData);
+};
+
+export const deleteCardFromServer = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
+    method: "DELETE",
+    headers: config.headers,
+  }).then(getResponseData);
 };
