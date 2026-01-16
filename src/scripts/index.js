@@ -9,7 +9,7 @@
 import { createCardElement, deleteCard, likeCard } from "./components/card.js";
 import { openModalWindow, closeModalWindow, setCloseModalWindowEventListeners } from "./components/modal.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
-import { getCardList, getUserInfo, setUserInfo, setAvatarInfo, createNewCard, deleteCardFromServer } from "./components/api.js";
+import { getCardList, getUserInfo, setUserInfo, setAvatarInfo, createNewCard, deleteCardFromServer, changeLike } from "./components/api.js";
 
 const validationSettings = {
     formSelector: ".popup__form",
@@ -53,6 +53,9 @@ let user_Id = null;
 
 const handleProfileFormSubmit = (evt) => {
   evt.preventDefault();
+  const changingButton = profileForm.querySelector('.popup__button');
+  const savedText = changingButton.textContent;
+  changingButton.textContent = 'Сохранение...';
   setUserInfo({
     name: profileTitleInput.value,
     about: profileDescriptionInput.value,
@@ -64,11 +67,17 @@ const handleProfileFormSubmit = (evt) => {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      changingButton.textContent = savedText;
     });
 };
 
 const handleAvatarFromSubmit = (evt) => {
   evt.preventDefault();
+  const changingButton = avatarForm.querySelector('.popup__button');
+  const savedText = changingButton.textContent;
+  changingButton.textContent = 'Сохранение...';
   setAvatarInfo(avatarInput.value)
     .then((userData) => {
       profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
@@ -77,11 +86,17 @@ const handleAvatarFromSubmit = (evt) => {
     .catch(err => {
       console.log(err);
     })
+    .finally(() => {
+      changingButton.textContent = savedText;
+    });
 };
 
 
 const handleCardFormSubmit = (evt) => {
   evt.preventDefault();
+  const changingButton = cardForm.querySelector('.popup__button');
+  const savedText = changingButton.textContent;
+  changingButton.textContent = 'Создание...';
   createNewCard({
     name: cardNameInput.value,
     link: cardLinkInput.value,
@@ -92,8 +107,8 @@ const handleCardFormSubmit = (evt) => {
       card,
       {
         onPreviewPicture: handlePreviewPicture,
-        onLikeIcon: likeCard,
-        onDeleteCard: deleteCard,
+        onLikeIcon: handleLikeCard,
+        onDeleteCard: handleDeleteCard,
       }, user_Id)
   );
 
@@ -103,6 +118,9 @@ const handleCardFormSubmit = (evt) => {
   })
   .catch((err) => {
     console.log(err);
+  })
+  .finally(() => {
+      changingButton.textContent = savedText;
   });
 };
 
@@ -113,6 +131,20 @@ const handleDeleteCard = (cardElement, cardId) => {
     })
     .catch((err) => {
       console.error( err);
+    });
+};
+
+const handleLikeCard = (likeButton, cardId, likeCount) => {
+  const isLiked = likeButton.classList.contains("card__like-button_is-active");
+  changeLike(cardId, isLiked)
+    .then((updatedCard) => {
+      likeButton.classList.toggle("card__like-button_is-active");
+      if (likeCount) {
+        likeCount.textContent = updatedCard.likes.length;
+      }
+    })
+    .catch((err) => {
+      console.error(err);
     });
 };
 
@@ -165,7 +197,7 @@ Promise.all([getCardList(), getUserInfo()])
       placesWrap.append(
         createCardElement(info, {
           onPreviewPicture: handlePreviewPicture,
-          onLikeIcon: likeCard,
+          onLikeIcon: handleLikeCard,
           onDeleteCard: handleDeleteCard,
         }, user_Id)
       );
