@@ -3,7 +3,7 @@ name: Deploy to Public Pages Repository
 on:
   push:
     branches:
-      - main
+      - branch
   workflow_dispatch:
 
 jobs:
