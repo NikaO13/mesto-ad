@@ -259,6 +259,8 @@ allPopups.forEach((popup) => {
   setCloseModalWindowEventListeners(popup);
 });
 
+// ☆☆☆ 
+
 Promise.all([getCardList(), getUserInfo()])
   .then(([cards, userData]) => {
     const user_Id = userData._id;
